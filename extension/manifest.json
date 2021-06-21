@@ -1,11 +1,11 @@
 {
     "manifest_version": 2,
     "name": "OSlash",
-    "version": "0.0.1",
+    "version": "",
     "description": "Boosts your productivity with keyboard driven actions.",
     "icons": {
-        "128": "assets/icons/icon128.png",
-        "48": "assets/icons/icon48.png"
+        "48": "assets/icons/icon48.png",
+        "128": "assets/icons/icon128.png"
     },
     "web_accessible_resources": [
         "launcher/launcher.html",
