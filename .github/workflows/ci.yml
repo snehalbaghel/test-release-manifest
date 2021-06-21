@@ -44,11 +44,13 @@ jobs:
           cat ./extension/package.json
           cat ./extension/manifest.json
 
-      - name: Commit versions
+      - name: Commit bumped versions back to Git after tag is created
         uses: stefanzweifel/git-auto-commit-action@v4
+        if: "startsWith(github.ref, 'refs/tags/')"
         with:
           commit_message: 'version: Updated version on release.'
           file_pattern: extension/package.json extension/manifest.json
+          branch: 'main'
           commit_options: '--no-verify --signoff'
           status_options: '--untracked-files=no'
           add_options: '-u'
@@ -57,7 +59,7 @@ jobs:
           skip_fetch: true    
           disable_globbing: true
 
-      - name: upload tarball to archives ⬆️
+      - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
           name: chrome-extension
