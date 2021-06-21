@@ -44,6 +44,34 @@ jobs:
           mv /tmp/manifest.json ./extension/manifest.json
           rm -f /tmp/package.json /tmp/manifest.json
 
+      - name: Commit versions
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "version: Updated version on release."
+          file_pattern: extension/package.json extension/manifest.json
+
+          # Optional. Used by `git-status`
+          # See https://git-scm.com/docs/git-status#_options
+          status_options: '--untracked-files=no'
+
+          # Optional. Used by `git-add`
+          # See https://git-scm.com/docs/git-add#_options
+          add_options: '-u'
+
+          # Optional. Used by `git-push`
+          # See https://git-scm.com/docs/git-push#_options
+          push_options: '--force'
+          
+          # Optional. Disable dirty check and always try to create a commit and push
+          skip_dirty_check: true    
+          
+          # Optional. Skip internal call to `git fetch`
+          skip_fetch: true    
+          
+          # Optional. Prevents the shell from expanding filenames. 
+          # Details: https://www.gnu.org/software/bash/manual/html_node/Filename-Expansion.html
+          disable_globbing: true
+
       - name: upload tarball to archives ⬆️
         uses: actions/upload-artifact@v2
         with:
