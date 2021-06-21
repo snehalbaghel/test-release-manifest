@@ -33,7 +33,7 @@ jobs:
 
       - name: Bump versions in package.json and manifest.json
         run: |
-          sudo apt-get install --yes –no-install-recommends moreutils
+          sudo apt-get install --yes –-no-install-recommends moreutils
           jq --arg v "${{ steps.bumpr.outputs.next_version }}" '.version = $v' ./extension/package.json | sponge ./extension/package.json
           jq --arg v "${{ steps.bumpr.outputs.next_version }}" '.version = $v' ./extension/manifest.json | sponge ./extension/manifest.json
           cat ./extension/package.json
