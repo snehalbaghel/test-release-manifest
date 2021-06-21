@@ -1,0 +1,74 @@
+{
+    "manifest_version": 2,
+    "name": "OSlash",
+    "version": "0.0.1",
+    "description": "Boosts your productivity with keyboard driven actions.",
+    "icons": {
+        "128": "assets/icons/icon128.png",
+        "48": "assets/icons/icon48.png"
+    },
+    "web_accessible_resources": [
+        "launcher/launcher.html",
+        "oauth/index.html",
+        "pinInstaller.css",
+        "pinInstaller.js",
+        "dashboard/*"
+    ],
+    "background": {
+        "page": "background/index.html",
+        "persistent": true
+    },
+    "commands": {
+        "search_bar": {
+            "description": "Launches OSlash search",
+            "suggested_key": {
+                "chromeos": "Ctrl+J",
+                "linux": "Alt+J",
+                "mac": "Command+J",
+                "windows": "Alt+J"
+            }
+        }
+    },
+    "options_ui": {
+        "page": "dashboard/login.html",
+        "open_in_tab": true
+    },
+    "permissions": [
+        "tabs",
+        "windows",
+        "history",
+        "topSites",
+        "<all_urls>",
+        "storage",
+        "unlimitedStorage",
+        "activeTab",
+        "webRequest",
+        "webRequestBlocking",
+        "*://o/*",
+        "*://m/*",
+        "*://*.google.com/",
+        "background",
+        "cookies",
+        "identity"
+    ],
+    "externally_connectable": {
+        "matches": [
+            "*://app.oslash.com/*",
+            "*://oslash.com/*",
+            "*://sentry.corp.oslash.com/*"
+        ]
+    },
+    "omnibox": {
+        "keyword": "o/"
+    },
+    "oauth2": {
+        "client_id": "798795782174-e05pnh0iuado0pu8a3ul3a18be5i422j.apps.googleusercontent.com",
+        "scopes": [
+            ""
+        ]
+    },
+    "browser_action": {
+        "default_title": "OSlash"
+    },
+    "key": "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCMrJerLsU63PUoj8Wwz+QqgEh5gLsgRsTdWcf0MZZX/suqSzd1/j4FU6w+xDfk/ZMRQWAtmUJLJCp/7UPjQTRXZB+xKb4f5Fl3IjQnWo1bS+sRXl+D50XcjVvp+lkQJVlb+r1FLAE+aK2YQjXPhS/w0wLWI/pqpGJHjY7tYvNxRPPFpzu/PA53EvSPHorr9ppkqjVqqV+cxrRZKjmTbT6oLMc3MQzNl6R5XMZ7CkwNgqMMwYcgs7ADQUvAzuPS6hn96pUMbCG5ED5O5c94wdIWXhB5+LojdsEAhtg62HUFUwLPklRx9IL+R9B9K0iuwbePOHaVEOWkE+4fpfzX/Zf9AgMBAAECggEALcGx769d3eCjKZdiQTnNyHlDmanitAPw4uLiJC7A7UxmaLTgjFOvTsJBo4TlfWlxnco7A3n3U0OnQ0ckrtW1tbtOh6zBN9RpuVN5zVcp5YlTI6ojvV7LnYqpW/jfYV4Uq9NqHwbKPMeFt6HJqP90cYvhP1Aiku93PDjyRYrLDotYgotYNApk/dbteCQLGfSF2RMMvS2hjVCB93vt6Ww43qwoxLNGQ0WkSyVgBMek8LYbtGZAj7XcuyPcLzB4Cj2l5prnAW9d9PfXDI0bFrPg6pC5DxSqnMjeazN1a23fYfiGDxTS1umgtCqpEAeaoJtx9pSdGxJx90YOgpPrQrpvTQKBgQDGDAaDnO3NzWLDAe1Zc6Lw43UNqHecdAR1tTPnaWzcQMfOb2EGY67GrfznCrHksKd9wcv+e3I1lhf4LnfP9pg6aOlRkEKiFVH3KQIONaFUl1AAz3pM971Pc0T0V4Ty8DTk5ujFmYxZTxWyrbZbyfnC60nZYW2jeLSeyKZswo23lwKBgQC11rEaVBzVmRrCaulpUBOVW64dOUj9yevjoojK1xm1UQ6VmSgHZFOV1n++RID5Y+ekaoH+aHvyGRcIVVyTNajzST3FRr2glr1ghMvloNvsG5AmOLvqzjoeoKEzIEHhgmoZQQcDtcE3MnnVJX6e85NWJIgYaGZGe+4BegMPN6F/iwKBgQClPPNSbGSdCXgVbE40DB8vDRhkxOLHTqVJ8F3V/kgtnH8Y5iT1x8XTTudrfajfPeUBL+ib8zNfMlPdZifhA8YPNek1fD+cLF2u8jAc2vI4OecuRe2suibhWzN1CnCKoZAATAh6lZpcCXf5FKbJ/sK8tsNu87MeaV+J+6+fntPPEQKBgEJQFS4g1pMezp9wFccOKNYjJRALQA8tgBT3xSMT5pA1CziLLgnkEIdoPhXJLa/FO0i+fsGkoO7dL4UefDBDNWXjo985uRXDYzS7uQ/45brpIlyN/BnZM2DP+3mFngD7am3jRQeZVOkoQz3z+oVFFsoncGpWSFYUA+wN7uexxfeZAoGBAL/yoBwVNBA1WBFZBKuk63jH5yH4yNsTL3zDQa4VeHZV7/YDhUlMyLLBiBMUWzFTuISaOKKKl2w1tAEOnDHYNt+3yKDXmux7P7qYvvDUl4tjskwEuOW3H5gD1kQlD84TsvN8eKxgIGdgo6yEGM7lXfh+tyLivu4rhkq6oUDglGXw"
+}
