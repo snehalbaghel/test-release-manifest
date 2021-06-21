@@ -30,6 +30,27 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           tag: ${{ steps.bumpr.outputs.next_version }}
+
+      - name: installing node ⚙️
+        uses: actions/setup-node@master
+        with:
+          node-version: 14.x
+
+      - name: Bump versions
+        run: |
+          node -e "var p = require('./extension/package.json'); p.version = '${{ steps.bumpr.outputs.next_version }}'; console.log(JSON.stringify(p, null, 4));" > /tmp/package.json
+          node -e "var m = require('./extension/manifest.json'); m.version = '${{ steps.bumpr.outputs.next_version }}'; console.log(JSON.stringify(p, null, 4));" > /tmp/manifest.json
+          mv /tmp/package.json ./extension/package.json
+          mv /tmp/manifest.json ./extension/manifest.json
+          rm -f /tmp/package.json /tmp/manifest.json
+
+      - name: upload tarball to archives ⬆️
+        uses: actions/upload-artifact@v2
+        with:
+          name: chrome-extension
+          path: extension/
+          retention-days: 5
+
   release-check:
     if: github.event.action == 'labeled'
     runs-on: ubuntu-latest
