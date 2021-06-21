@@ -44,18 +44,18 @@ jobs:
           cat ./extension/package.json
           cat ./extension/manifest.json
 
-      # - name: Commit versions
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     commit_message: "version: Updated version on release."
-      #     file_pattern: extension/package.json extension/manifest.json
-      #     commit_options: '--no-verify --signoff'
-      #     status_options: '--untracked-files=no'
-      #     add_options: '-u'
-      #     push_options: '--force'
-      #     skip_dirty_check: true    
-      #     skip_fetch: true    
-      #     disable_globbing: true
+      - name: Commit versions
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'version: Updated version on release.'
+          file_pattern: extension/package.json extension/manifest.json
+          commit_options: '--no-verify --signoff'
+          status_options: '--untracked-files=no'
+          add_options: '-u'
+          push_options: '--force'
+          skip_dirty_check: true    
+          skip_fetch: true    
+          disable_globbing: true
 
       - name: upload tarball to archives ⬆️
         uses: actions/upload-artifact@v2
