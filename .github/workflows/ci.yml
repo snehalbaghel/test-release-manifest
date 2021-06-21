@@ -31,15 +31,10 @@ jobs:
           github_token: ${{ secrets.github_token }}
           tag: ${{ steps.bumpr.outputs.next_version }}
 
-      - name: Install Node.js
-        uses: actions/setup-node@master
-        with:
-          node-version: 14.x
-
       - name: Bump versions in package.json and manifest.json
         run: |
-          npx --yes dot-json extension/package.json version ${{ steps.bumpr.outputs.next_version }}
-          npx --yes dot-json extension/manifest.json version ${{ steps.bumpr.outputs.next_version }}
+          jq '.version = "${{ steps.bumpr.outputs.next_version }}"' ./extension/package.json | sponge ./extension/package.json
+          jq '.version = "${{ steps.bumpr.outputs.next_version }}"' ./extension/manifest.json | sponge ./extension/manifest.json
           cat ./extension/package.json
           cat ./extension/manifest.json
 
