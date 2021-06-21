@@ -31,20 +31,17 @@ jobs:
           github_token: ${{ secrets.github_token }}
           tag: ${{ steps.bumpr.outputs.next_version }}
 
-      - name: installing node ⚙️
+      - name: Install Node.js
         uses: actions/setup-node@master
         with:
           node-version: 14.x
 
-      - name: Bump versions
+      - name: Bump versions in package.json and manifest.json
         run: |
-          echo "${{ steps.bumpr.outputs.next_version }}"
-          echo "\${{ steps.bumpr.outputs.next_version }}"
-          node -e "var p = require('./extension/package.json'); p.version = '\${{ steps.bumpr.outputs.next_version }}'; console.log(JSON.stringify(p, null, 4));" > /tmp/package.json
-          node -e "var m = require('./extension/manifest.json'); m.version = '\${{ steps.bumpr.outputs.next_version }}'; console.log(JSON.stringify(m, null, 4));" > /tmp/manifest.json
-          mv /tmp/package.json ./extension/package.json
-          mv /tmp/manifest.json ./extension/manifest.json
-          rm -f /tmp/package.json /tmp/manifest.json
+          npx --yes dot-json extension/package.json version ${{ steps.bumpr.outputs.next_version }}
+          npx --yes dot-json extension/manifest.json version ${{ steps.bumpr.outputs.next_version }}
+          cat ./extension/package.json
+          cat ./extension/manifest.json
 
       # - name: Commit versions
       #   uses: stefanzweifel/git-auto-commit-action@v4
