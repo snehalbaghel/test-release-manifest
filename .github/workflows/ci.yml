@@ -33,6 +33,7 @@ jobs:
 
       - name: Bump versions in package.json and manifest.json
         run: |
+          sudo apt-get install -y sponge
           jq '.version = "${{ steps.bumpr.outputs.next_version }}"' ./extension/package.json | sponge ./extension/package.json
           jq '.version = "${{ steps.bumpr.outputs.next_version }}"' ./extension/manifest.json | sponge ./extension/manifest.json
           cat ./extension/package.json
