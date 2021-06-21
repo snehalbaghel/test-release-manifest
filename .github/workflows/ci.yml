@@ -31,13 +31,14 @@ jobs:
           github_token: ${{ secrets.github_token }}
           tag: ${{ steps.bumpr.outputs.next_version }}
 
-      - name: Install Node.js
+      - name: Install Node.js for dot-json
         uses: actions/setup-node@v2
         with:
           node-version: '14'
 
       - name: Bump versions in package.json and manifest.json
         run: |
+          echo ${{ steps.bumpr.outputs.next_version }}
           npm_config_yes=true npx dot-json extension/package.json version ${{ steps.bumpr.outputs.next_version }}
           npm_config_yes=true npx dot-json extension/manifest.json version ${{ steps.bumpr.outputs.next_version }}
           cat ./extension/package.json
