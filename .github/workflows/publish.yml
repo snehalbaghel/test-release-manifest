@@ -18,7 +18,6 @@ jobs:
       - name: Replace the v prefix in version tag
         uses: mad9000/actions-find-and-replace-string@1
         id: findandreplace
-        if: "!steps.bumpr.outputs.skip"
         with:
           source: ${{ steps.vars.outputs.tag }}
           find: 'v'
