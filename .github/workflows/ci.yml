@@ -12,7 +12,6 @@ on:
 
 jobs:
   release:
-    if: github.event.action != 'labeled'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -20,23 +19,19 @@ jobs:
 
       # Bump version on merging Pull Requests with specific labels.
       # (bump:major,bump:minor,bump:patch)
+      # Run this only on non-tag refs (i.e. regular commits) and when the
+      # action isn't labeled.
       - name: Bump up tag/release version
         id: bumpr
-        if: "!startsWith(github.ref, 'refs/tags/')"
+        if: |
+          !startsWith(github.ref, 'refs/tags/') &&
+          github.event.action != 'labeled'
         uses: haya14busa/action-bumpr@v1
 
-      # Update corresponding major and minor tag.
-      # e.g. Update v1 and v1.2 when releasing v1.2.3
-      - name: Update tags for semver
-        uses: haya14busa/action-update-semver@v1
-        if: "!steps.bumpr.outputs.skip"
-        with:
-          github_token: ${{ secrets.github_token }}
-          tag: ${{ steps.bumpr.outputs.next_version }}
-
-      - name: Run find-and-replace to remove the v prefix in version
+      - name: Replace the v prefix in version tag
         uses: mad9000/actions-find-and-replace-string@1
         id: findandreplace
+        if: "!steps.bumpr.outputs.skip"
         with:
           source: ${{ steps.bumpr.outputs.next_version }}
           find: 'v'
@@ -44,6 +39,7 @@ jobs:
 
       - name: Install Node.js for dot-json
         uses: actions/setup-node@v2
+        if: "!steps.bumpr.outputs.skip"
         with:
           node-version: '14'
 
