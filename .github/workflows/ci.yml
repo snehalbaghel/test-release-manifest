@@ -53,20 +53,6 @@ jobs:
           message: 'version: 🏷 Auto-update version on release.'
           pull_strategy: 'NO-PULL'
 
-        # uses: stefanzweifel/git-auto-commit-action@v4
-        # if: "!steps.bumpr.outputs.skip"
-        # with:
-        #   commit_message: 'version: 🏷 Updated version on release.'
-        #   file_pattern: extension/package.json extension/manifest.json
-        #   repository: .
-        #   commit_options: '--no-verify --signoff'
-        #   status_options: '--untracked-files=no'
-        #   add_options: '-u'
-        #   push_options: '--force'
-        #   skip_dirty_check: true    
-        #   skip_fetch: true    
-        #   disable_globbing: true
-
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
@@ -78,17 +64,13 @@ jobs:
         if: "!steps.bumpr.outputs.skip"
         run: zip -r oslash-extension.zip extension/
 
-      - name: Debug
-        if: "!steps.bumpr.outputs.skip"
-        run: ls -lshart
-
       - name: Attach build artifact to release
         if: "!steps.bumpr.outputs.skip"
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: oslash-extension.zip
-          tag: ${{ github.ref }}
+          tag: ${{ steps.bumpr.outputs.next_version }}
           overwrite: true
           body: "This is my release text"
 
