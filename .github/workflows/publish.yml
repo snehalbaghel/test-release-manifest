@@ -1,0 +1,47 @@
+name: publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Grab current tag
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+
+      - name: Install Node.js for dot-json
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Bump versions in package.json and manifest.json
+        run: |
+          npm_config_yes=true npx dot-json extension/package.json version ${{ steps.vars.outputs.tag }}
+          npm_config_yes=true npx dot-json extension/manifest.json version ${{ steps.vars.outputs.tag }}
+
+      - name: Commit bumped versions back to Git after tag is created
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: 'extension/'
+          default_author: github_actions
+          branch: main
+          message: 'version: 🏷 Auto-update version on release.'
+          pull_strategy: 'NO-PULL'
+
+      - name: Build extension ZIP file
+        run: zip -r oslash-extension.zip extension/
+
+      - name: Attach extension ZIP file to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: oslash-extension.zip
+          tag: ${{ steps.vars.outputs.tag }}
+          overwrite: true
+          body: "This is my release text"

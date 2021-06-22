@@ -1,59 +1,26 @@
-name: release
+name: build
 
 on:
   push:
     branches:
       - main
     tags:
-      - 'v*.*.*'
-  pull_request:
-    types:
-      - labeled
+      - '!*'
 
 jobs:
-  release:
-    if: github.event.action != 'labeled'
+  build+tag:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Bump version on merging Pull Requests with specific labels.
-      # (bump:major,bump:minor,bump:patch)
-      - name: Bump up tag/release version
-        id: bumpr
-        if: "!startsWith(github.ref, 'refs/tags/')"
-        uses: haya14busa/action-bumpr@v1
-
-      - name: Replace the v prefix in version tag
-        uses: mad9000/actions-find-and-replace-string@1
-        id: findandreplace
-        if: "!steps.bumpr.outputs.skip"
-        with:
-          source: ${{ steps.bumpr.outputs.next_version }}
-          find: 'v'
-          replace: ''
-
-      - name: Install Node.js for dot-json
+      - name: Install Node.js for semantic-release
         uses: actions/setup-node@v2
         with:
           node-version: '14'
 
-      - name: Bump versions in package.json and manifest.json
-        if: "!steps.bumpr.outputs.skip"
-        run: |
-          npm_config_yes=true npx dot-json extension/package.json version ${{ steps.findandreplace.outputs.value }}
-          npm_config_yes=true npx dot-json extension/manifest.json version ${{ steps.findandreplace.outputs.value }}
-
-      - name: Commit bumped versions back to Git after tag is created
-        uses: EndBug/add-and-commit@v7
-        if: "!steps.bumpr.outputs.skip"
-        with:
-          add: 'extension/'
-          default_author: github_actions
-          branch: main
-          message: 'version: 🏷 Auto-update version on release.'
-          pull_strategy: 'NO-PULL'
+      - name: Semantic release
+        run: npm_config_yes=true npx semantic-release
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
@@ -61,25 +28,3 @@ jobs:
           name: chrome-extension
           path: extension/
           retention-days: 5
-
-      - name: Build extension ZIP file
-        if: "!steps.bumpr.outputs.skip"
-        run: zip -r oslash-extension.zip extension/
-
-      - name: Attach extension ZIP file to release
-        if: "!steps.bumpr.outputs.skip"
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: oslash-extension.zip
-          tag: ${{ steps.bumpr.outputs.next_version }}
-          overwrite: true
-          body: "This is my release text"
-
-  release-check:
-    if: github.event.action == 'labeled'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Post status comment with bumped-up version number
-        uses: haya14busa/action-bumpr@v1
