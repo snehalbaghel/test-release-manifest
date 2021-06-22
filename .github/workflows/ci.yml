@@ -8,7 +8,7 @@ on:
       - '!*'
 
 jobs:
-  build+tag:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
