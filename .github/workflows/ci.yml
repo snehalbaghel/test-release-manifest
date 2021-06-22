@@ -46,19 +46,26 @@ jobs:
           npm_config_yes=true npx dot-json extension/manifest.json version ${{ steps.findandreplace.outputs.value }}
 
       - name: Commit bumped versions back to Git after tag is created
-        uses: stefanzweifel/git-auto-commit-action@v4
-        if: "!steps.bumpr.outputs.skip"
+        uses: EndBug/add-and-commit@v7
         with:
-          commit_message: 'version: 🏷 Updated version on release.'
-          file_pattern: extension/package.json extension/manifest.json
-          repository: .
-          commit_options: '--no-verify --signoff'
-          status_options: '--untracked-files=no'
-          add_options: '-u'
-          push_options: '--force'
-          skip_dirty_check: true    
-          skip_fetch: true    
-          disable_globbing: true
+          add: 'extension/'
+          default_author: github_actor
+          message: 'version: 🏷 Auto-update version on release.'
+          pull_strategy: 'NO-PULL'
+
+        # uses: stefanzweifel/git-auto-commit-action@v4
+        # if: "!steps.bumpr.outputs.skip"
+        # with:
+        #   commit_message: 'version: 🏷 Updated version on release.'
+        #   file_pattern: extension/package.json extension/manifest.json
+        #   repository: .
+        #   commit_options: '--no-verify --signoff'
+        #   status_options: '--untracked-files=no'
+        #   add_options: '-u'
+        #   push_options: '--force'
+        #   skip_dirty_check: true    
+        #   skip_fetch: true    
+        #   disable_globbing: true
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
