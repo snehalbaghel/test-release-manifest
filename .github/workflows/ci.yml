@@ -51,9 +51,10 @@ jobs:
         with:
           add: 'extension/'
           default_author: github_actor
-          branch: origin/main #Set to default branch.
+          branch: main
           message: 'version: 🏷 Auto-update version on release.'
           pull_strategy: 'NO-PULL'
+          push: '-u origin main' # Set to default branch.
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
@@ -62,11 +63,11 @@ jobs:
           path: extension/
           retention-days: 5
 
-      - name: Build extension ZIP
+      - name: Build extension ZIP file
         if: "!steps.bumpr.outputs.skip"
         run: zip -r oslash-extension.zip extension/
 
-      - name: Attach build artifact to release
+      - name: Attach extension ZIP file to release
         if: "!steps.bumpr.outputs.skip"
         uses: svenstaro/upload-release-action@v2
         with:
