@@ -1,6 +1,6 @@
 {
     "name": "test-release-manifest",
     "private": true,
-    "version": "3.2.0",
+    "version": "3.2.4",
     "description": "Dummy app"
 }
