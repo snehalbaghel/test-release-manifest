@@ -52,8 +52,6 @@ jobs:
         run: |
           npm_config_yes=true npx dot-json extension/package.json version ${{ steps.findandreplace.outputs.value }}
           npm_config_yes=true npx dot-json extension/manifest.json version ${{ steps.findandreplace.outputs.value }}
-          cat ./extension/package.json
-          cat ./extension/manifest.json
 
       - name: Commit bumped versions back to Git after tag is created
         uses: stefanzweifel/git-auto-commit-action@v4
