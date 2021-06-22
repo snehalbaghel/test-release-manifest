@@ -49,8 +49,9 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         if: "!steps.bumpr.outputs.skip"
         with:
-          commit_message: 'version: Updated version on release.'
+          commit_message: 'version: 🏷 Updated version on release.'
           file_pattern: extension/package.json extension/manifest.json
+          repository: .
           commit_options: '--no-verify --signoff'
           status_options: '--untracked-files=no'
           add_options: '-u'
@@ -69,7 +70,7 @@ jobs:
       - name: Debug
         run: ls -lshart
 
-      - name: Attach extension to release
+      - name: Attach build artifact to release
         if: "startsWith(github.ref, 'refs/tags/')"
         uses: svenstaro/upload-release-action@v2
         with:
