@@ -15,15 +15,19 @@ jobs:
         id: vars
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
 
-      - name: Install Node.js for dot-json
-        uses: actions/setup-node@v2
+      - name: Replace the v prefix in version tag
+        uses: mad9000/actions-find-and-replace-string@1
+        id: findandreplace
+        if: "!steps.bumpr.outputs.skip"
         with:
-          node-version: '14'
+          source: ${{ steps.vars.outputs.tag }}
+          find: 'v'
+          replace: ''
 
       - name: Bump versions in package.json and manifest.json
         run: |
-          npm_config_yes=true npx dot-json extension/package.json version ${{ steps.vars.outputs.tag }}
-          npm_config_yes=true npx dot-json extension/manifest.json version ${{ steps.vars.outputs.tag }}
+          npm_config_yes=true npx dot-json extension/package.json version ${{ steps.findandreplace.outputs.value }}
+          npm_config_yes=true npx dot-json extension/manifest.json version ${{ steps.findandreplace.outputs.value }}
 
       - name: Commit bumped versions back to Git after tag is created
         uses: EndBug/add-and-commit@v7
@@ -44,4 +48,3 @@ jobs:
           file: oslash-extension.zip
           tag: ${{ steps.vars.outputs.tag }}
           overwrite: true
-          body: "This is my release text"
