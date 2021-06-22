@@ -54,7 +54,6 @@ jobs:
           branch: main
           message: 'version: 🏷 Auto-update version on release.'
           pull_strategy: 'NO-PULL'
-          push: '-u origin main' # Set to default branch.
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
