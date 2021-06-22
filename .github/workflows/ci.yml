@@ -34,6 +34,14 @@ jobs:
           github_token: ${{ secrets.github_token }}
           tag: ${{ steps.bumpr.outputs.next_version }}
 
+      - name: Run find-and-replace to remove the v prefix in version
+        uses: mad9000/actions-find-and-replace-string@1
+        id: findandreplace
+        with:
+          source: ${{ steps.bumpr.outputs.next_version }}
+          find: 'v'
+          replace: ''
+
       - name: Install Node.js for dot-json
         uses: actions/setup-node@v2
         with:
@@ -42,9 +50,8 @@ jobs:
       - name: Bump versions in package.json and manifest.json
         if: "!steps.bumpr.outputs.skip"
         run: |
-          echo ${{ steps.bumpr.outputs.next_version }}
-          npm_config_yes=true npx dot-json extension/package.json version ${{ steps.bumpr.outputs.next_version }}
-          npm_config_yes=true npx dot-json extension/manifest.json version ${{ steps.bumpr.outputs.next_version }}
+          npm_config_yes=true npx dot-json extension/package.json version ${{ steps.findandreplace.outputs.value }}
+          npm_config_yes=true npx dot-json extension/manifest.json version ${{ steps.findandreplace.outputs.value }}
           cat ./extension/package.json
           cat ./extension/manifest.json
 
