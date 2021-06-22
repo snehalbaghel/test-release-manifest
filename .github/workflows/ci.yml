@@ -50,7 +50,7 @@ jobs:
         if: "!steps.bumpr.outputs.skip"
         with:
           add: 'extension/'
-          default_author: github_actor
+          default_author: github_actions
           branch: main
           message: 'version: 🏷 Auto-update version on release.'
           pull_strategy: 'NO-PULL'
