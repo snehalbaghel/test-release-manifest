@@ -50,6 +50,7 @@ jobs:
         with:
           add: 'extension/'
           default_author: github_actor
+          branch: main #Set to default branch.
           message: 'version: 🏷 Auto-update version on release.'
           pull_strategy: 'NO-PULL'
 
