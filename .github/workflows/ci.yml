@@ -24,7 +24,7 @@ jobs:
       - name: Semantic release
         run: npm_config_yes=true npx semantic-release
 
-      - name: Dummy step that introduces a random file that says this is built output
+      - name: Dummy step that should be considered extension build
         run: |
           mkdir extension
           cp package.json extension/package.json
