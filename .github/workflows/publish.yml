@@ -27,13 +27,13 @@ jobs:
 
       - name: Bump versions in package.json and manifest.json
         run: |
-          npm_config_yes=true npx dot-json extension/package.json version ${{ steps.findandreplace.outputs.value }}
-          npm_config_yes=true npx dot-json extension/manifest.json version ${{ steps.findandreplace.outputs.value }}
+          npm_config_yes=true npx dot-json package.json version ${{ steps.findandreplace.outputs.value }}
+          npm_config_yes=true npx dot-json manifest.json version ${{ steps.findandreplace.outputs.value }}
 
       - name: Commit bumped versions back to Git after tag is created
         uses: EndBug/add-and-commit@v7
         with:
-          add: 'extension/package.json extension/manifest.json'
+          add: 'package.json manifest.json'
           default_author: github_actions
           branch: main
           message: 'version: 🏷 Auto-update version on release.'
@@ -43,13 +43,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           name: chrome-extension
-          path: ./artifact/
+          path: ./build-output/
 
       - name: Display structure of downloaded files
-        run: ls -lshrt ./artifact/
+        run: ls -lshrt ./build-output/
 
       - name: Build local flavour of extension ZIP file
-        run: zip -r oslash-extension-local.zip artifact/extension/
+        run: zip -r oslash-extension-local.zip build-output/extension/
 
       - name: Attach local flavour of extension ZIP file to GitHub release
         uses: svenstaro/upload-release-action@v2
@@ -64,9 +64,9 @@ jobs:
       # 2. The manifest.json > key field is removed.
       - name: Build store flavour of extension ZIP file
         run: |
-          npm_config_yes=true npx dot-json artifact/extension/manifest.json oauth2.client_id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }}
-          npm_config_yes=true npx dot-json artifact/extension/manifest.json key --delete
-          zip -r oslash-extension-store.zip artifact/extension/
+          npm_config_yes=true npx dot-json build-output/manifest.json oauth2.client_id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }}
+          npm_config_yes=true npx dot-json build-output/manifest.json key --delete
+          zip -r oslash-extension-store.zip build-output/
 
       - name: Attach store flavour of extension ZIP file to GitHub release
         uses: svenstaro/upload-release-action@v2
