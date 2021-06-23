@@ -1,4 +1,4 @@
-name: publish
+name: package
 
 on:
   release:
@@ -19,16 +19,27 @@ jobs:
 
       - name: Replace the v prefix in version tag
         uses: mad9000/actions-find-and-replace-string@1
-        id: findandreplace
+        id: version
         with:
           source: ${{ steps.vars.outputs.tag }}
           find: 'v'
           replace: ''
 
+      - name: Download artifact from build step (i.e. the fully built extension)
+        uses: actions/checkout@v2
+        with:
+          name: chrome-extension
+          path: ./build-output/
+
+      - name: Display structure of downloaded files
+        run: ls -lashrt ./build-output/
+
       - name: Bump versions in package.json and manifest.json
         run: |
-          npm_config_yes=true npx dot-json package.json version ${{ steps.findandreplace.outputs.value }}
-          npm_config_yes=true npx dot-json manifest.json version ${{ steps.findandreplace.outputs.value }}
+          npm_config_yes=true npx dot-json package.json version ${{ steps.version.outputs.value }}
+          npm_config_yes=true npx dot-json manifest.json version ${{ steps.version.outputs.value }}
+          npm_config_yes=true npx dot-json build-output/package.json version ${{ steps.version.outputs.value }}
+          npm_config_yes=true npx dot-json build-output/manifest.json version ${{ steps.version.outputs.value }}
 
       - name: Commit bumped versions back to Git after tag is created
         uses: EndBug/add-and-commit@v7
@@ -39,16 +50,7 @@ jobs:
           message: 'version: 🏷 Auto-update version on release.'
           pull_strategy: 'NO-PULL'
 
-      - name: Download artifact from build step (i.e. the fully built extension)
-        uses: actions/checkout@v2
-        with:
-          name: chrome-extension
-          path: ./build-output/
-
-      - name: Display structure of downloaded files
-        run: ls -lshrt ./build-output/
-
-      - name: Build local flavour of extension ZIP file
+      - name: Package local flavour of extension ZIP file
         run: zip -r oslash-extension-local.zip build-output/
 
       - name: Attach local flavour of extension ZIP file to GitHub release
@@ -62,7 +64,7 @@ jobs:
       # The prod-only store flavour has 2 differences from the local flavour.
       # 1. The manifest.json > oauth2.client_id key is different from prod.
       # 2. The manifest.json > key field is removed.
-      - name: Build store flavour of extension ZIP file
+      - name: Package store flavour of extension ZIP file
         run: |
           npm_config_yes=true npx dot-json build-output/manifest.json oauth2.client_id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }}
           npm_config_yes=true npx dot-json build-output/manifest.json key --delete
