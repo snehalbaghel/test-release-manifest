@@ -62,9 +62,10 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build-output/oslash-extension-local.zip
+          file: oslash-extension-local.zip
           tag: ${{ steps.vars.outputs.tag }}
           overwrite: true
+        working-directory: build-output/
 
       # The prod-only store flavour has 2 differences from the local flavour.
       # 1. The manifest.json > oauth2.client_id key is different from prod.
@@ -80,6 +81,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build-output/oslash-extension-store.zip
+          file: oslash-extension-store.zip
           tag: ${{ steps.vars.outputs.tag }}
           overwrite: true
+        working-directory: build-output/
