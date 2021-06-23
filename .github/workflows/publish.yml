@@ -39,8 +39,17 @@ jobs:
           message: 'version: 🏷 Auto-update version on release.'
           pull_strategy: 'NO-PULL'
 
+      - name: Download artifact from build step (i.e. the fully built extension)
+        uses: actions/checkout@v2
+        with:
+          name: chrome-extension
+          path: ./artifact/
+
+      - name: Display structure of downloaded files
+        run: ls -lshrt ./artifact/
+
       - name: Build local flavour of extension ZIP file
-        run: zip -r oslash-extension-local.zip extension/
+        run: zip -r oslash-extension-local.zip artifact/extension/
 
       - name: Attach local flavour of extension ZIP file to GitHub release
         uses: svenstaro/upload-release-action@v2
@@ -55,9 +64,9 @@ jobs:
       # 2. The manifest.json > key field is removed.
       - name: Build store flavour of extension ZIP file
         run: |
-          npm_config_yes=true npx dot-json extension/manifest.json oauth2.client_id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }}
-          npm_config_yes=true npx dot-json extension/manifest.json key --delete
-          zip -r oslash-extension-store.zip extension/
+          npm_config_yes=true npx dot-json artifact/extension/manifest.json oauth2.client_id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }}
+          npm_config_yes=true npx dot-json artifact/extension/manifest.json key --delete
+          zip -r oslash-extension-store.zip artifact/extension/
 
       - name: Attach store flavour of extension ZIP file to GitHub release
         uses: svenstaro/upload-release-action@v2
