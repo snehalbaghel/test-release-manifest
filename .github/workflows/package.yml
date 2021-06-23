@@ -62,7 +62,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: oslash-extension-local.zip
+          file: build-output/oslash-extension-local.zip
           tag: ${{ steps.vars.outputs.tag }}
           overwrite: true
 
@@ -80,6 +80,6 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: oslash-extension-store.zip
+          file: build-output/oslash-extension-store.zip
           tag: ${{ steps.vars.outputs.tag }}
           overwrite: true
