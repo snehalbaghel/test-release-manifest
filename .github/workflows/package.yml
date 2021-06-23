@@ -66,6 +66,10 @@ jobs:
           tag: ${{ steps.vars.outputs.tag }}
           overwrite: true
 
+      - name: Cleanup local flavour of extension
+        run: rm -f oslash-extension-local.zip
+        working-directory: build-output/
+
       # The prod-only store flavour has 2 differences from the local flavour.
       # 1. The manifest.json > oauth2.client_id key is different from prod.
       # 2. The manifest.json > key field is removed.
@@ -73,7 +77,7 @@ jobs:
         run: |
           npm_config_yes=true npx dot-json manifest.json oauth2.client_id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }}
           npm_config_yes=true npx dot-json manifest.json key --delete
-          zip -r oslash-extension-store.zip ./
+          zip --recurse-paths oslash-extension-store.zip ./
         working-directory: build-output/
 
       - name: Attach store flavour of extension ZIP file to GitHub release
