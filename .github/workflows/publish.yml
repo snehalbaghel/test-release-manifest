@@ -7,6 +7,8 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_OAUTH2_CLIENT_ID_PROD: xxx
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -37,13 +39,30 @@ jobs:
           message: 'version: 🏷 Auto-update version on release.'
           pull_strategy: 'NO-PULL'
 
-      - name: Build extension ZIP file
-        run: zip -r oslash-extension.zip extension/
+      - name: Build local flavour of extension ZIP file
+        run: zip -r oslash-extension-local.zip extension/
 
-      - name: Attach extension ZIP file to release
+      - name: Attach local flavour of extension ZIP file to GitHub release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: oslash-extension.zip
+          file: oslash-extension-local.zip
+          tag: ${{ steps.vars.outputs.tag }}
+          overwrite: true
+
+      # The prod-only store flavour has 2 differences from the local flavour.
+      # 1. The manifest.json > oauth2.client_id key is different from prod.
+      # 2. The manifest.json > key field is removed.
+      - name: Build store flavour of extension ZIP file
+        run: |
+          npm_config_yes=true npx dot-json extension/manifest.json oauth2.client_id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }}
+          npm_config_yes=true npx dot-json extension/manifest.json key --delete
+          zip -r oslash-extension-store.zip extension/
+
+      - name: Attach store flavour of extension ZIP file to GitHub release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: oslash-extension-store.zip
           tag: ${{ steps.vars.outputs.tag }}
           overwrite: true
