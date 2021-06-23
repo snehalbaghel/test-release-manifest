@@ -27,6 +27,9 @@ jobs:
       - name: Dummy step that introduces a random file that says this is built output
         run: |
           mkdir extension
+          cp package.json extension/package.json
+          cp manifest.json extension/manifest.json
+          cp README.md extension/README.md
           touch extension/build_output.txt
 
       - name: Upload build artifact
