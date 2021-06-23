@@ -49,7 +49,7 @@ jobs:
         run: ls -lshrt ./build-output/
 
       - name: Build local flavour of extension ZIP file
-        run: zip -r oslash-extension-local.zip build-output/extension/
+        run: zip -r oslash-extension-local.zip build-output/
 
       - name: Attach local flavour of extension ZIP file to GitHub release
         uses: svenstaro/upload-release-action@v2
