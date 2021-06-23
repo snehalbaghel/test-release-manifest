@@ -26,7 +26,7 @@ jobs:
           replace: ''
 
       - name: Download artifact from build step (i.e. the fully built extension)
-        uses: actions/checkout@v2
+        uses: actions/download-artifact@v2
         with:
           name: chrome-extension
           path: ./build-output/
