@@ -55,7 +55,8 @@ jobs:
           pull_strategy: 'NO-PULL'
 
       - name: Package local flavour of extension ZIP file
-        run: zip -r oslash-extension-local.zip build-output/
+        run: zip -r oslash-extension-local.zip ./*
+        working-directory: build-output/
 
       - name: Attach local flavour of extension ZIP file to GitHub release
         uses: svenstaro/upload-release-action@v2
@@ -70,9 +71,10 @@ jobs:
       # 2. The manifest.json > key field is removed.
       - name: Package store flavour of extension ZIP file
         run: |
-          npm_config_yes=true npx dot-json build-output/manifest.json oauth2.client_id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }}
-          npm_config_yes=true npx dot-json build-output/manifest.json key --delete
-          zip -r oslash-extension-store.zip build-output/
+          npm_config_yes=true npx dot-json manifest.json oauth2.client_id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }}
+          npm_config_yes=true npx dot-json manifest.json key --delete
+          zip -r oslash-extension-store.zip ./
+        working-directory: build-output/
 
       - name: Attach store flavour of extension ZIP file to GitHub release
         uses: svenstaro/upload-release-action@v2
