@@ -35,3 +35,4 @@ jobs:
           name: chrome-extension
           path: extension/
           retention-days: 5
+          if-no-files-found: error

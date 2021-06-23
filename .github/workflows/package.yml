@@ -25,14 +25,18 @@ jobs:
           find: 'v'
           replace: ''
 
-      - name: Download artifact from build step (i.e. the fully built extension)
-        uses: actions/download-artifact@v2
+      - name: Download artifact from build workflow (i.e. the fully built extension)
+        uses: dawidd6/action-download-artifact@v2
         with:
+          workflow: ci.yml
+          workflow_conclusion: success
+          branch: main
           name: chrome-extension
           path: ./build-output/
 
-      - name: Display structure of downloaded files
-        run: ls -lashrt ./build-output/
+      - name: Display structure of downloaded artifact
+        run: ls -lashrt
+        working-directory: ./build-output/
 
       - name: Bump versions in package.json and manifest.json
         run: |
