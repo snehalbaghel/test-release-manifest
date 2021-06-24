@@ -12,10 +12,18 @@ jobs:
       - name: Debug event and action context
         uses: hmarr/debug-action@v2
 
+      - name: ♻️ Replace the v prefix in version tag
+        uses: mad9000/actions-find-and-replace-string@1
+        id: version
+        with:
+          source: ${{ github.event.ref }}
+          find: 'refs/tags/'
+          replace: ''
+
       - name: ⤵️ Download extension ZIP file from releases
         uses: dsaltares/fetch-gh-release-asset@master
         with:
-          version: "tags/${{ github.event.inputs.ref }}"
+          version: tags/${{ steps.version.outputs.value }}
           file: oslash-extension-store.zip
           target: ./
           token: ${{ secrets.GITHUB_TOKEN }}
