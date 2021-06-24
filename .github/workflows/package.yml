@@ -92,5 +92,5 @@ jobs:
         with:
           workflow: publish
           ref: ${{ steps.vars.outputs.tag }}
-          inputs: '{ "publish": "false" }'
+          inputs: '{ "publish": "true" }'
           token: ${{ secrets.TOKEN }}
