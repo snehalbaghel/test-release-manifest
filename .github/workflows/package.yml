@@ -84,7 +84,7 @@ jobs:
           tag: ${{ steps.vars.outputs.tag }}
           overwrite: true
 
-      - name: Dispatch trigger for publish workflow
+      - name: 🏐 Dispatch trigger for publish workflow
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: publish

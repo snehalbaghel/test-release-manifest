@@ -9,10 +9,13 @@ jobs:
       EXTENSION_ID: gpljeioabgadbidbkcbhjjglpinfhmal
       GOOGLE_OAUTH2_CLIENT_ID_PROD: xxx
     steps:
+      - name: Debug event and action context
+        uses: hmarr/debug-action@v2
+
       - name: ⤵️ Download extension ZIP file from releases
         uses: dsaltares/fetch-gh-release-asset@master
         with:
-          version: tags/${{ github.event.inputs.ref }}
+          version: "tags/${{ github.event.inputs.ref }}"
           file: oslash-extension-store.zip
           target: ./
           token: ${{ secrets.GITHUB_TOKEN }}
