@@ -5,7 +5,7 @@ on:
     types: [published]
 
 jobs:
-  publish:
+  package:
     runs-on: ubuntu-latest
     env:
       GOOGLE_OAUTH2_CLIENT_ID_PROD: xxx
@@ -83,3 +83,10 @@ jobs:
           file: build-output/oslash-extension-store.zip
           tag: ${{ steps.vars.outputs.tag }}
           overwrite: true
+
+      - name: Dispatch trigger for publish workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: publish
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          ref: ${{ steps.vars.outputs.tag }}
