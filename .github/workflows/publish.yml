@@ -25,9 +25,6 @@ jobs:
           target: ./oslash-extension-store.zip
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Debug downloaded attachment
-        run: ls -lsrhta
-
       # @see https://developer.chrome.com/docs/webstore/using_webstore_api/
       # @see https://github.com/DrewML/chrome-webstore-upload-cli#web-store-upload-cli
       - name: 🚀 Publish extension to Chrome store

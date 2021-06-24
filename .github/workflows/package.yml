@@ -86,7 +86,7 @@ jobs:
 
       # Trigger publish workflow.
       # Note that for the `workflow_dispatch` event to work, you need a GitHub PAT
-      # with repo access.
+      # with repo access, not the default GitHub token.
       - name: 🏐 Dispatch trigger for publish workflow
         uses: benc-uk/workflow-dispatch@v1
         with:
