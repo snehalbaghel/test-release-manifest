@@ -27,6 +27,12 @@ jobs:
 
       # @see https://developer.chrome.com/docs/webstore/using_webstore_api/
       # @see https://github.com/DrewML/chrome-webstore-upload-cli#web-store-upload-cli
+      - name: 📤 Upload (but not publish) extension to Chrome store
+        if: github.event.inputs.publish == 'false'
+        run: |
+          npm_config_yes=true npx chrome-webstore-upload-cli publish --source oslash-extension-store.zip --extension-id ${{ env.EXTENSION_ID }} --client-id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }} --client-secret ${{ secrets.GOOGLE_OAUTH2_CLIENT_SECRET_PROD }} --refresh-token ${{ secrets.GOOGLE_OAUTH2_CLIENT_REFRESH_TOKEN_PROD }}
+
       - name: 🚀 Publish extension to Chrome store
+        if: github.event.inputs.publish == 'true'
         run: |
           npm_config_yes=true npx chrome-webstore-upload-cli publish --source oslash-extension-store.zip --extension-id ${{ env.EXTENSION_ID }} --client-id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }} --client-secret ${{ secrets.GOOGLE_OAUTH2_CLIENT_SECRET_PROD }} --refresh-token ${{ secrets.GOOGLE_OAUTH2_CLIENT_REFRESH_TOKEN_PROD }} --auto-publish
