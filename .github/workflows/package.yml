@@ -84,6 +84,9 @@ jobs:
           tag: ${{ steps.vars.outputs.tag }}
           overwrite: true
 
+      # Trigger publish workflow.
+      # Note that for the `workflow_dispatch` event to work, you need a GitHub PAT
+      # with repo access.
       - name: 🏐 Dispatch trigger for publish workflow
         uses: benc-uk/workflow-dispatch@v1
         with:

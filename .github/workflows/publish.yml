@@ -9,9 +9,6 @@ jobs:
       EXTENSION_ID: gpljeioabgadbidbkcbhjjglpinfhmal
       GOOGLE_OAUTH2_CLIENT_ID_PROD: xxx
     steps:
-      - name: Debug event and action context
-        uses: hmarr/debug-action@v2
-
       - name: ♻️ Replace the v prefix in version tag
         uses: mad9000/actions-find-and-replace-string@1
         id: version
@@ -25,7 +22,7 @@ jobs:
         with:
           version: tags/${{ steps.version.outputs.value }}
           file: oslash-extension-store.zip
-          target: ./
+          target: ./oslash-extension-store.zip
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Debug downloaded attachment
@@ -35,4 +32,4 @@ jobs:
       # @see https://github.com/DrewML/chrome-webstore-upload-cli#web-store-upload-cli
       - name: 🚀 Publish extension to Chrome store
         run: |
-          npm_config_yes=true npx chrome-webstore-upload-cli --source oslash-extension-store.zip --extension-id ${{ env.EXTENSION_ID }} --client-id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }} --client-secret ${{ secrets.GOOGLE_OAUTH2_CLIENT_SECRET_PROD }} --refresh-token ${{ secrets.GOOGLE_OAUTH2_CLIENT_REFRESH_TOKEN_PROD }} --auto-publish
+          npm_config_yes=true npx chrome-webstore-upload-cli publish --source oslash-extension-store.zip --extension-id ${{ env.EXTENSION_ID }} --client-id ${{ env.GOOGLE_OAUTH2_CLIENT_ID_PROD }} --client-secret ${{ secrets.GOOGLE_OAUTH2_CLIENT_SECRET_PROD }} --refresh-token ${{ secrets.GOOGLE_OAUTH2_CLIENT_REFRESH_TOKEN_PROD }} --auto-publish
