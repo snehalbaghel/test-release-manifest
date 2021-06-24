@@ -1,6 +1,14 @@
 name: publish
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Set to true to publish; set to false to only upload
+        required: true
+        default: false
+      tags:
+        description: Option to control publishing to the Chrome Web Store
 
 jobs:
   publish:

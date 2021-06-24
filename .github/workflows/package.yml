@@ -91,6 +91,6 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: publish
-          token: ${{ secrets.TOKEN }}
           ref: ${{ steps.vars.outputs.tag }}
           inputs: '{ "publish": false }'
+          token: ${{ secrets.TOKEN }}
