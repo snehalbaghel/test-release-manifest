@@ -88,5 +88,5 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: publish
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.TOKEN }}
           ref: ${{ steps.vars.outputs.tag }}
