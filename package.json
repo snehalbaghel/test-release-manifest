@@ -2,5 +2,8 @@
     "name": "test-release-manifest",
     "private": true,
     "version": "3.3.7",
-    "description": "Dummy app"
+    "description": "Dummy app",
+    "devDependencies": {
+        "@semantic-release/exec": "^5.0.0"
+    }
 }
