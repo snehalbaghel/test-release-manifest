@@ -29,6 +29,10 @@ jobs:
           echo ::set-output name=version::$(cat .VERSION)
           rm -f .VERSION
 
+      - name: Say HEY if version bump was found
+        if: steps.version.outputs.version
+        run: echo "HEY"
+
       - name: Dummy step that should be considered extension build
         run: |
           echo "Version: "
