@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "OSlash",
-    "version": "3.3.9",
+    "version": "3.3.10",
     "description": "Boosts your productivity with keyboard driven actions.",
     "icons": {
         "48": "assets/icons/icon48.png",
