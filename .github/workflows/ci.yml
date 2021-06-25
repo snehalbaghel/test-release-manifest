@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Try to find the next version
+      - name: Find the next version from semantic-release
         id: version
         run: |
           yarn install
@@ -31,8 +31,12 @@ jobs:
 
       - name: Dummy step that should be considered extension build
         run: |
-          echo "VERSION --->>>> "
+          echo "Version: "
           echo ${{ steps.version.outputs.version }}
+          ./scripts/bump-version.sh ${{ steps.version.outputs.version }} ./package.json ./manifest.json
+          echo "JSON file contents at the time of build -> "
+          cat package.json
+          cat manifest.json
           mkdir extension
           cp package.json extension/package.json
           cp manifest.json extension/manifest.json
