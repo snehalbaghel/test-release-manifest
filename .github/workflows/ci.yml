@@ -22,7 +22,9 @@ jobs:
           node-version: '14'
 
       - name: Semantic release
-        run: npm_config_yes=true npx semantic-release
+        run: |
+          yarn install
+          npm_config_yes=true npx semantic-release
 
       - name: Dummy step that should be considered extension build
         run: |
