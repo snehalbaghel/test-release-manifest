@@ -21,20 +21,30 @@ jobs:
         with:
           node-version: '14'
 
+      - name: Try to find the next version
+        id: version
+        run: |
+          yarn install
+          npm_config_yes=true npx semantic-release --dry-run
+          run: echo ::set-output name=version::$(cat VERSION)
+          rm -f .VERSION
+
+      - name: Dummy step that should be considered extension build
+        run: |
+          echo "VERSION --->>>> "
+          echo ${{ steps.version.outputs.version }}
+          mkdir extension
+          cp package.json extension/package.json
+          cp manifest.json extension/manifest.json
+          cp README.md extension/README.md
+          touch extension/build_output.txt
+
       - name: Semantic release
         run: |
           yarn install
           npm_config_yes=true npx semantic-release
           cat package.json
           cat manifest.json
-
-      - name: Dummy step that should be considered extension build
-        run: |
-          mkdir extension
-          cp package.json extension/package.json
-          cp manifest.json extension/manifest.json
-          cp README.md extension/README.md
-          touch extension/build_output.txt
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2

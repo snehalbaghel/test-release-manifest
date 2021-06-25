@@ -34,18 +34,6 @@ jobs:
           name: chrome-extension
           path: ./build-output/
 
-      # - name: 📝 Bump versions in package.json and manifest.json
-      #   run: ./scripts/bump-version.sh ${{ steps.version.outputs.value }} ./package.json ./manifest.json ./build-output/package.json ./build-output/manifest.json
-
-      # - name: ☑️ Commit bumped versions back to Git after tag is created
-      #   uses: EndBug/add-and-commit@v7
-      #   with:
-      #     add: 'package.json manifest.json'
-      #     default_author: github_actions
-      #     branch: main
-      #     message: 'version: 🏷 Auto-update version on release.'
-      #     pull_strategy: 'NO-PULL'
-
       - name: 📦 Package local flavour of extension ZIP file
         run: zip -r oslash-extension-local.zip ./*
         working-directory: build-output/
