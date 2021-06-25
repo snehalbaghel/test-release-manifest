@@ -25,6 +25,8 @@ jobs:
         run: |
           yarn install
           npm_config_yes=true npx semantic-release
+          cat package.json
+          cat manifest.json
 
       - name: Dummy step that should be considered extension build
         run: |
