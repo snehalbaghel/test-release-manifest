@@ -35,8 +35,7 @@ jobs:
           path: ./build-output/
 
       - name: 📝 Bump versions in package.json and manifest.json
-        run: bump-version.sh ${{ steps.version.outputs.value }}
-        working-directory: scripts/
+        run: ./scripts/bump-version.sh ${{ steps.version.outputs.value }} ./package.json ./manifest.json ./build-output/package.json ./build-output/manifest.json
 
       - name: ☑️ Commit bumped versions back to Git after tag is created
         uses: EndBug/add-and-commit@v7
