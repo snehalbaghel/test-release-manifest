@@ -35,11 +35,8 @@ jobs:
           path: ./build-output/
 
       - name: 📝 Bump versions in package.json and manifest.json
-        run: |
-          npm_config_yes=true npx dot-json package.json version ${{ steps.version.outputs.value }}
-          npm_config_yes=true npx dot-json manifest.json version ${{ steps.version.outputs.value }}
-          npm_config_yes=true npx dot-json build-output/package.json version ${{ steps.version.outputs.value }}
-          npm_config_yes=true npx dot-json build-output/manifest.json version ${{ steps.version.outputs.value }}
+        run: bump-version.sh ${{ steps.version.outputs.value }}
+        working-directory: scripts/
 
       - name: ☑️ Commit bumped versions back to Git after tag is created
         uses: EndBug/add-and-commit@v7
@@ -86,11 +83,11 @@ jobs:
 
       # Trigger publish workflow.
       # Note that for the `workflow_dispatch` event to work, you need a GitHub PAT
-      # with repo access, not the default GitHub token.
+      # with write access to the repo, not the default GitHub token.
       - name: 🏐 Dispatch trigger for publish workflow
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: publish
           ref: ${{ steps.vars.outputs.tag }}
-          inputs: '{ "publish": "true" }'
+          inputs: '{ "publish": "false" }'
           token: ${{ secrets.TOKEN }}
