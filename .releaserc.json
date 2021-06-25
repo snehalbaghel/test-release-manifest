@@ -11,6 +11,16 @@
       {
         "publishCmd": "./scripts/bump-version.sh ${nextRelease.version} ./package.json ./manifest.json"
       }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "package.json",
+          "manifest.json"
+        ],
+        "message": "chore(release): ⬆️ Bump version to ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
     ]
   ]
 }
