@@ -1,6 +1,7 @@
 {
   "branches": [
-    "main"
+    "main",
+    { "name": "staging", "prerelease": "rc" }
   ],
   "plugins": [
     "@semantic-release/commit-analyzer",
