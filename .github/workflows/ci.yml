@@ -21,8 +21,17 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Semantic release
-        run: npm_config_yes=true npx semantic-release
+      - name: Find the next version from semantic-release
+        id: version
+        run: |
+          yarn install
+          npm_config_yes=true npx semantic-release --dry-run
+          echo ::set-output name=version::$(cat .VERSION)
+          rm -f .VERSION
+
+      - name: Bump up version in package.json and manifest.json
+        if: steps.version.outputs.version
+        run: ./scripts/bump-version.sh ${{ steps.version.outputs.version }} ./package.json ./manifest.json
 
       - name: Dummy step that should be considered extension build
         run: |
@@ -31,6 +40,13 @@ jobs:
           cp manifest.json extension/manifest.json
           cp README.md extension/README.md
           touch extension/build_output.txt
+
+      - name: Semantic release
+        run: |
+          yarn install
+          npm_config_yes=true npx semantic-release
+          cat package.json
+          cat manifest.json
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
